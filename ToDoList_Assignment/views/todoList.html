@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<script src="/angular/angular.js"></script>
+
+<body ng-app="todoApp" ng-controller="todoCtrl">
+    <div style="float:left; clear:both; border:1px solid black">
+        <div style="float:left; clear:both">
+            <h2>My Todo List</h2>
+        </div>
+        <div style="float:right;"><span ng-click="logOut(e)" style="cursor:pointer; text-decoration:underline; color:blue">Log Out</span></div>
+        <div style="float:left; clear:both">
+        <form ng-submit="todoItemAdd()">
+            <input type="text" ng-model="todoInputBox" size="50" placeholder="Add New">
+            <input type="submit" value="Add New">
+        </form>
+        </div>
+
+        <br>
+        <div style="float:left; clear:both; margin:10px">
+            <span>TODO Count:{{todoList.length}} </span>
+        </div>
+        <br>
+        <div style="float:left; clear:both">
+            <div ng-repeat="item in todoList" style="margin:10px; padding:10px">
+                <input type="button" value="Remove" ng-click="remove($index)"> <span ng-bind="item.todoText"></span>
+            </div>
+        </div>
+        <div style="float:left; clear:both">
+        <p><button ng-click="removeAll()">Remove All</button></p>
+      </div>
+        <script>
+            var app = angular.module('todoApp', []);
+            app.controller('todoCtrl', function ($scope,$window) {
+
+                $scope.todoList = [];
+                //Adding todo item here
+                $scope.todoItemAdd = function () {
+                    //Pushing new todo item into the todolist.
+                    $scope.todoList.push({ todoText: $scope.todoInputBox, finish: false });
+                    //resetting todoInputBox to empty after adding one
+                    $scope.todoInputBox = "";
+                };
+
+                $scope.remove = function (index) {
+                    //Removing item from index position
+                    $scope.todoList.splice($scope.todoList.indexOf(index), 1);
+                };
+
+                $scope.logOut = function (e) {
+                    //LogOut
+                    $window.location.href = '/';
+                };
+
+                $scope.removeAll = function () {
+                    //Removing all todo items
+                    $scope.todoList = [];
+                };
+            });
+        </script>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<script src="/jquery/jquery.min.js"></script>
+<script src="/angular/angular.js"></script>
+
+<body ng-app="loginApp" ng-controller="loginCtrl">
+
+    <h2>Login</h2>
+
+    <form ng-submit="loginSubmit()">
+        <label for="email">Email: </label>
+        <input ng-model="email" name="email" class="my-input" aria-describedby="inputDescription" /> <br/>
+        <label for="password">Passowrd: </label>
+        <input ng-model="password" name="password" class="my-input" aria-describedby="inputDescription" type="password"
+        /><br/>
+        <input type="submit" value="Submit">
+    </form>
+
+    <br>
+    <script>
+        var app = angular.module('loginApp', []);
+        app.controller('loginCtrl', function ($scope, $http, $window) {
+            $scope.email = "g@g.com";
+            $scope.password = "g@1234";
+            $scope.loginSubmit = function () {
+
+                var data = $.param({
+                    email: $scope.email,
+                    password: $scope.password
+                });
+                
+                $http({
+                    method: 'post',
+                    url: '/login',
+                    data: data,
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+                }).then(function(data){
+                    console.log(data);
+                    if(data.data.code === 200){
+                        $window.location.href = '/todoList';
+                    }
+                }).catch(function(err){
+                    console.log(err);
+                })
+            }
+
+        });
+    </script>
+
+</body>
+
+</html>
